@@ -1,0 +1,6 @@
+*.env
+bin/
+node_modules/
+cgi-bin/
+*.zip
+public/uploads/

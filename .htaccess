@@ -1,0 +1,23 @@
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-l
+
+# DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION BEGIN
+PassengerAppRoot "/home/africxyz/public_html/zru_api2"
+PassengerBaseURI "/"
+PassengerNodejs "/home/africxyz/nodevenv/public_html/zru_api2/20/bin/node"
+PassengerAppType node
+PassengerStartupFile server.js
+# DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION END
+# <IfModule mod_rewrite.c>
+#     RewriteEngine On
+#     RewriteBase /
+    
+#     # If the request is not for a valid file
+#     RewriteCond %{REQUEST_FILENAME} !-f
+#     # and not for a valid directory
+#     RewriteCond %{REQUEST_FILENAME} !-d
+#     # then pass the request to server.js
+#     RewriteRule ^(.*)$ server.js [L]
+# </IfModule>
