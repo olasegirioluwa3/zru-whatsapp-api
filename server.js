@@ -29,25 +29,11 @@ app.use('/uploads', express.static("public/uploads"));
 
 // Import and use the userRoutes function passing app and io
 const userRoutes = require('./routes/userRoutes');
-const applicationRoutes = require('./routes/applicationRoutes');
-const staffApplicationRoutes = require('./routes/staffApplicationRoutes');
-const paymentRoutes = require('./routes/paymentRoutes');
-const facultyRoutes = require('./routes/facultyRoutes');
-const schoolleavingexamRoutes = require('./routes/schoolLeavingExamRoutes');
-const admissiontestRoutes = require('./routes/admissionTestRoutes');
-const credentialRoutes = require('./routes/credentialRoutes');
 const utilSocialMetaRoutes = require('./routes/utilSocialMetaRoutes');
 // require("./app/user/routes/index.routes.js")(app);
 // require("./app/project/routes/index.routes.js")(app);
 
 userRoutes(app, io, sequelize);
-applicationRoutes(app, io, sequelize);
-paymentRoutes(app, io, sequelize);
-facultyRoutes(app, io, sequelize);
-schoolleavingexamRoutes(app, io, sequelize);
-admissiontestRoutes(app, io, sequelize);
-staffApplicationRoutes(app, io, sequelize);
-credentialRoutes(app, io, sequelize);
 utilSocialMetaRoutes(app, io, sequelize);
 
 io.on('connection', (socket) => {

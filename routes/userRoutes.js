@@ -6,13 +6,9 @@ const crypto = require('crypto');
 // const theuser = user;
 const router = express.Router();
 const initializeUserModel = require('../models/user');
-const initializeApplicationModel = require('../models/application');
-const initializeFacultyProgramModel = require('../models/facultyprogram');
-const initializeFacultyModel = require('../models/faculty');
 
 const authenticateToken = require('../middleware/auth.user.middleware');
 const validateAndSanitize = require('../middleware/input.cleaner.middleware');
-const { uploadProfilePicture, deleteExistingProfilePicture, uploadCoverPicture, deleteExistingCoverPicture } = require('../middleware/upload.user.middleware');
 const { where } = require('sequelize');
 
 // Function to broadcast Socket.IO messages
@@ -22,9 +18,6 @@ const broadcastSocketIoMessage = (io, header, body) => {
 
 module.exports = (app, io, sequelize) => {
   const User = initializeUserModel(sequelize, require('sequelize').DataTypes);
-  const Application = initializeApplicationModel(sequelize, require('sequelize').DataTypes);
-  const FacultyProgram = initializeFacultyProgramModel(sequelize, require('sequelize').DataTypes);
-  const Faculty = initializeFacultyModel(sequelize, require('sequelize').DataTypes);
   // Function to generate a random token
   const generateToken = () => {
     return crypto.randomBytes(20).toString('hex');
@@ -101,19 +94,9 @@ module.exports = (app, io, sequelize) => {
       let faculty = null;
   
       if (applications && applications.programId !== null) {
-        program = await FacultyProgram.findOne({
-          where: { programId: applications.programId },
-          attributes: { exclude: ['programDetails'], order: [['createdAt', 'DESC']] },
-        });
-        if (program && program.facultyId !== null){
-          faculty = await Faculty.findOne({
-            where: { facultyId: program.facultyId },
-            attributes: { exclude: ['applicationDetails'], order: [['createdAt', 'DESC']] },
-          });
-        }
       }
   
-      res.json({ status: "success", user: userProfile, applications, program, faculty });
+      res.json({ status: "success", user: userProfile });
     } catch (error) {
       console.error(error);
   
@@ -158,7 +141,7 @@ module.exports = (app, io, sequelize) => {
   });
 
   // update cover picture
-  router.put('/:id/coverpicture', authenticateToken, uploadCoverPicture, async (req, res) => {
+  router.put('/:id/coverpicture', async (req, res) => {
     try {
       const userId = req.params.id;
 
@@ -198,7 +181,7 @@ module.exports = (app, io, sequelize) => {
   });
 
   // update profile picture
-  router.put('/:id/profilepicture', authenticateToken, uploadProfilePicture, async (req, res) => {
+  router.put('/:id/profilepicture', async (req, res) => {
     try {
       const userId = req.params.id;
 
